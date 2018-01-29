@@ -1,6 +1,6 @@
 "use strict";
 
-const {TickerStream, OrderBookStream, CURRENCY} = require("../index.js");
+const { TickerStream, OrderBookStream, DiffOrderBookStream, CURRENCY } = require("../index.js");
 
 //printing available currencies
 console.log(CURRENCY);
@@ -11,6 +11,13 @@ console.log(CURRENCY);
 // Live trades
 const tickerStream = new TickerStream();
 const tickerTopic = tickerStream.subscribe(CURRENCY.ETH_EUR);
+
+const diffStream = new DiffOrderBookStream();
+const diffTopic = diffStream.subscribe(CURRENCY.LTC_USD);
+
+diffStream.on(diffTopic, data => {
+    console.log('diff stream', diffTopic, data);
+});
 
 /*
     as tickers are re-usable (subscribe to multiple currencies)
